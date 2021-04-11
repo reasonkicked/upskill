@@ -1,12 +1,10 @@
 import json, random, pathlib, csv
 from urllib.request import urlopen
 import ast
+import click
 
 
 number_of_winners = 3#int(input("Enter a number of winners: "))
-
-
-
 
 
 def losulosu_json(json_obj, items):
@@ -54,4 +52,21 @@ def losulosu_csv(csv_obj, items):
 losulosu_csv("data/participants2.csv", number_of_winners)
 
 losulosu_json("data/participants1.json", number_of_winners)
+
+
+with open("data/lottery_templates/item_giveaway.json") as item_giveaway_json:
+    item_giveaway = json.load(item_giveaway_json)
+
+
+@click.command()
+@click.option('--count', default=1, help='Number of greetings.')
+@click.option('--name', prompt='Your name',
+              help='The person to greet.')
+def hello(count, name):
+    """Simple program that greets NAME for a total of COUNT times."""
+    for x in range(count):
+        click.echo('Hello %s!' % name)
+
+if __name__ == '__main__':
+    hello()
 

@@ -1,0 +1,4 @@
+
+        [consle_scripts]
+        upskill=upskill:cli
+    
