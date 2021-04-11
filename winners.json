@@ -1,0 +1,28 @@
+{
+  "people": [
+    {
+      "firstName": "Mietek",
+      "lastName": "Goszty\u0142a",
+      "hobbies": [
+        "running",
+        "sky diving",
+        "singing"
+      ],
+      "age": 35,
+      "weight": 2,
+      "Phone": "123123212"
+    },
+    {
+      "firstName": "Kazek",
+      "lastName": "Laskow",
+      "hobbies": [
+        "running",
+        "sky diving",
+        "singing"
+      ],
+      "Phone": "123123212",
+      "age": 35,
+      "weight": 2
+    }
+  ]
+}
