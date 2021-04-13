@@ -4,7 +4,7 @@ import ast
 import click
 
 
-number_of_winners = 3#int(input("Enter a number of winners: "))
+number_of_winners = 5#int(input("Enter a number of winners: "))
 
 
 # function loads .csv or .json file and returns JSON list
@@ -12,7 +12,7 @@ def read_input_file(file_path):
     if file_path.endswith(".json"): 
         loaded_file = json.load(open(file_path,"r"))         
         loaded_file = json.dumps(loaded_file, indent=4)
-        print(loaded_file) 
+        #print(loaded_file) 
         return loaded_file
     elif file_path.endswith(".csv"): 
         loaded_file = json.dumps(list(csv.DictReader(open(file_path))), indent = 4)        
@@ -21,14 +21,14 @@ def read_input_file(file_path):
 
 
 json_obj = read_input_file("data/participants1.csv")
-print(type(json_obj))
-print(json_obj)
+#print(type(json_obj))
+#print(json_obj)
 original_stdout = sys.stdout # Save a reference to the original standard output
 
 with open('participants_converted.json', 'w') as f:
-    sys.stdout = f # Change the standard output to the file we created.
+    sys.stdout = f 
     print(json_obj)
-    sys.stdout = original_stdout # Reset the standard output to its original value
+    sys.stdout = original_stdout 
 
 
 # function losulosu_json returns array of winners
@@ -47,14 +47,15 @@ def losulosu_json(items):
             all_weights.append(current_weight)            
         except:
             all_weights.append(1)
-    #print(all_weights)
-    randomList = random.choices(all_indexes, weights = all_weights, k=items)
+    all_indexes_set = set(all_indexes) #converting list to set to avoid repetitions
+    print(all_indexes_set)
+    randomList = random.choices(list(all_indexes_set), weights = all_weights, k=items)
     print(randomList, "in losulosu_json")
     return randomList
 
 
 
-losulosu_json(number_of_winners)
+#losulosu_json(number_of_winners)
 
 
 def printwinners_json():
@@ -63,7 +64,7 @@ def printwinners_json():
     data_from_csv = {}
     #print(winners)
     list_of_winners = json.dumps(winners)
-    print(list_of_winners)
+    print(list_of_winners, " winners returned by losulosu_json in printwinners_json")
     with open("jsonfile.json", 'w') as jsonFile:
         jsonFile.write(json.dumps(data_from_csv, indent=4))
 
@@ -73,11 +74,11 @@ def printwinners_json():
     data=[]
     for x in winners:
         my_item = next((item for item in json_loader if item['id'] == str(x)), None)
-        print(my_item)
+        #print(my_item)
         data.append(my_item)
 
     
-    print(data)
+    print(data,  " converted json list of winners in printwinners_json")
     with open("winners.json", 'w') as winners_file:
         winners_file.write(json.dumps(data, indent=4))
 
