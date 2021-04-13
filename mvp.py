@@ -17,8 +17,21 @@ def read_input_file(file_path):
     elif file_path.endswith(".csv"): 
         loaded_file = json.dumps(list(csv.DictReader(open(file_path))), indent = 4)        
         return loaded_file
-    else: raise ValueError("The file is not json nor csv")
+    else: raise ValueError("The file is not json nor csv.")
 
+def select_lottery_template():
+    lotery_template_version = 1
+    if lotery_template_version == 1:
+        with open("data/lottery_templates/item_giveaway.json") as json_file_opened:
+            json_loader = json.load(json_file_opened)
+            return (json_loader)
+    elif lotery_template_version == 2:
+        with open("data/lottery_templates/separate_prizes.json") as json_file_opened:
+            json_loader = json.load(json_file_opened)
+            return (json_loader)
+    else: raise ValueError("Entered value is incorrect.")
+
+#select_lotery_template()
 
 json_obj = read_input_file("data/participants1.csv")
 #print(type(json_obj))
@@ -59,7 +72,8 @@ def losulosu_json(items):
 
 
 def printwinners_json():
-    
+    lottery_template = select_lottery_template()
+    print(lottery_template)
     winners = losulosu_json(number_of_winners)
     data_from_csv = {}
     #print(winners)
@@ -74,8 +88,8 @@ def printwinners_json():
     data=[]
     for x in winners:
         my_item = next((item for item in json_loader if item['id'] == str(x)), None)
-        #print(my_item)
         data.append(my_item)
+        
 
     
     print(data,  " converted json list of winners in printwinners_json")
@@ -83,13 +97,16 @@ def printwinners_json():
         winners_file.write(json.dumps(data, indent=4))
 
     with open("winners.json") as winners_file:
-        winners_loader = json.load(winners_file)  
+        winners_loader = json.load(winners_file)
+        #winners_loader[1]["prize"] = 3
+        #print(winners_loader)
         print("The list of winners:") 
         for x in range(len(winners_loader)):
+            winners_loader[x]['prize'] = lottery_template['prizes'][0]
             current_winner_first_name = winners_loader[x]['first_name']
             current_winner_last_name = winners_loader[x]['last_name']
-            print(current_winner_first_name, current_winner_last_name + " has won.")
-            
+            print(current_winner_first_name, current_winner_last_name + " has won", winners_loader[x]['prize']['name'])
+        print(winners_loader)   
     return(winners)
 
 #printwinners("data/participants1.csv")
