@@ -19,25 +19,12 @@ def read_input_file(file_path):
         return loaded_file
     else: raise ValueError("The file is not json nor csv.")
 
-def select_lottery_template():
-    lotery_template_version = 1
-    if lotery_template_version == 1:
-        with open("data/lottery_templates/item_giveaway.json") as json_file_opened:
-            json_loader = json.load(json_file_opened)
-            return (json_loader)
-    elif lotery_template_version == 2:
-        with open("data/lottery_templates/separate_prizes.json") as json_file_opened:
-            json_loader = json.load(json_file_opened)
-            return (json_loader)
-    else: raise ValueError("Entered value is incorrect.")
 
-#select_lotery_template()
-
-json_obj = read_input_file("data/participants1.csv")
+# select json or csv file and convert it to json
+json_obj = read_input_file("data/participants1.json")
 #print(type(json_obj))
 #print(json_obj)
 original_stdout = sys.stdout # Save a reference to the original standard output
-
 with open('participants_converted.json', 'w') as f:
     sys.stdout = f 
     print(json_obj)
@@ -67,14 +54,14 @@ def losulosu_json(items):
     return randomList
 
 
-
 #losulosu_json(number_of_winners)
 
-
-def printwinners_json():
-    lottery_template = select_lottery_template()
-    print(lottery_template)
-    winners = losulosu_json(number_of_winners)
+def item_giveaway_lottery():
+    with open("data/lottery_templates/item_giveaway.json") as json_file_opened:
+            json_loader = json.load(json_file_opened)
+    lottery_template = json_loader
+    #print(lottery_template)
+    winners = losulosu_json(5)
     data_from_csv = {}
     #print(winners)
     list_of_winners = json.dumps(winners)
@@ -90,8 +77,6 @@ def printwinners_json():
         my_item = next((item for item in json_loader if item['id'] == str(x)), None)
         data.append(my_item)
         
-
-    
     print(data,  " converted json list of winners in printwinners_json")
     with open("winners.json", 'w') as winners_file:
         winners_file.write(json.dumps(data, indent=4))
@@ -100,7 +85,7 @@ def printwinners_json():
         winners_loader = json.load(winners_file)
         #winners_loader[1]["prize"] = 3
         #print(winners_loader)
-        print("The list of winners:") 
+        print("The list of winners:")        
         for x in range(len(winners_loader)):
             winners_loader[x]['prize'] = lottery_template['prizes'][0]
             current_winner_first_name = winners_loader[x]['first_name']
@@ -109,11 +94,65 @@ def printwinners_json():
         print(winners_loader)   
     return(winners)
 
-#printwinners("data/participants1.csv")
-#printwinners_json("data/participants1.json")
-printwinners_json()
+
+def separate_prizes_lottery():
+    with open("data/lottery_templates/separate_prizes.json") as json_file_opened:
+            json_loader = json.load(json_file_opened)
+    lottery_template = json_loader
+    #print(lottery_template)
+    winners = losulosu_json(3)
+    data_from_csv = {}
+    #print(winners)
+    list_of_winners = json.dumps(winners)
+    print(list_of_winners, " winners returned by losulosu_json in printwinners_json")
+    with open("jsonfile.json", 'w') as jsonFile:
+        jsonFile.write(json.dumps(data_from_csv, indent=4))
+
+    with open("participants_converted.json") as json_file_opened:
+        json_loader = json.load(json_file_opened)
+
+    data=[]
+    for x in winners:
+        my_item = next((item for item in json_loader if item['id'] == str(x)), None)
+        data.append(my_item)
+        
+    print(data,  " converted json list of winners in printwinners_json")
+    with open("winners.json", 'w') as winners_file:
+        winners_file.write(json.dumps(data, indent=4))
+
+    with open("winners.json") as winners_file:
+        winners_loader = json.load(winners_file)
+        #winners_loader[1]["prize"] = 3
+        #print(winners_loader)
+        print("The list of winners:")        
+        for x in range(len(winners_loader)):
+            winners_loader[x]['prize'] = lottery_template['prizes'][x]
+            current_winner_first_name = winners_loader[x]['first_name']
+            current_winner_last_name = winners_loader[x]['last_name']
+            print(current_winner_first_name, current_winner_last_name + " has won", winners_loader[x]['prize']['name'])
+        print(winners_loader)   
+    return(winners)
+
+
+def lottery_menu():
+    lottery_template_version = 2
+    if lottery_template_version == 1:
+        
+
+        item_giveaway_lottery()
+
+        
+    elif lottery_template_version == 2:
+        
+
+        separate_prizes_lottery()
+        
+
+        
+    else: raise ValueError("Entered value is incorrect.")
 
 
 
+lottery_menu()
 
 
