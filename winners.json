@@ -1,28 +1,17 @@
-{
-  "people": [
+[
     {
-      "firstName": "Mietek",
-      "lastName": "Goszty\u0142a",
-      "hobbies": [
-        "running",
-        "sky diving",
-        "singing"
-      ],
-      "age": 35,
-      "weight": 2,
-      "Phone": "123123212"
+        "id": "15",
+        "first_name": "Gareth",
+        "last_name": "Kirsz"
     },
     {
-      "firstName": "Kazek",
-      "lastName": "Laskow",
-      "hobbies": [
-        "running",
-        "sky diving",
-        "singing"
-      ],
-      "Phone": "123123212",
-      "age": 35,
-      "weight": 2
+        "id": "3",
+        "first_name": "Sigmund",
+        "last_name": "Saw"
+    },
+    {
+        "id": "14",
+        "first_name": "Aidan",
+        "last_name": "Onele"
     }
-  ]
-}
+]
