@@ -1,5 +1,64 @@
 import click
+def printwinners(csv_obj):
+    winners = losulosu_csv(csv_obj, number_of_winners)
+    data_from_csv = {}
+    with open(csv_obj) as csv_file_opened:
+        csv_reader = csv.DictReader(csv_file_opened)
+        for rows in csv_reader:
+            id = rows['id']
+            data_from_csv[id] = rows
+    print(winners)
+    with open("jsonfile.json", 'w') as jsonFile:
+        jsonFile.write(json.dumps(data_from_csv, indent=4))
 
+    with open("data/participants1.json") as json_file_opened:
+        json_loader = json.load(json_file_opened)
+
+    data=[]
+    for x in winners:
+        my_item = next((item for item in json_loader if item['id'] == str(x)), None)
+        print(my_item)
+        data.append(my_item)
+
+    
+    print(data)
+    with open("winners.json", 'w') as winners_file:
+        winners_file.write(json.dumps(data, indent=4))
+
+    with open("winners.json") as winners_file:
+        winners_loader = json.load(winners_file)  
+        print("The list of winners:") 
+        for x in range(len(winners_loader)):
+            current_winner_first_name = winners_loader[x]['first_name']
+            current_winner_last_name = winners_loader[x]['last_name']
+            print(current_winner_first_name, current_winner_last_name + " has won.")
+            
+    return(winners)
+
+def losulosu_csv(csv_obj, items):
+    with open(csv_obj) as csv_file_opened:
+        csv_reader = csv.reader(csv_file_opened, delimiter=',')
+        line_count = 0
+        all_weights = []
+        all_ids = []
+        for row in csv_reader:
+            if line_count == 0:
+                line_count += 1
+            else:                
+                line_count += 1
+                current_id = ast.literal_eval(row[0])
+                all_ids.append(current_id)
+                try:
+                    current_weight = ast.literal_eval(row[3])
+                    all_weights.append(current_weight)
+                except:
+                    all_weights.append(1)
+        #print(all_ids)
+        #print(all_weights)
+        randomList = random.choices(all_ids, weights = all_weights, k=items)
+        print(randomList)
+        return randomList
+        
 class Config(object):
 
     def __init__(self):
