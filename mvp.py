@@ -81,6 +81,11 @@ def item_giveaway_lottery():
     with open("winners.json", 'w') as winners_file:
         winners_file.write(json.dumps(data, indent=4))
 
+
+
+
+
+
     with open("winners.json") as winners_file:
         winners_loader = json.load(winners_file)
         #winners_loader[1]["prize"] = 3
