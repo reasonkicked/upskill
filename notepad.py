@@ -1,5 +1,24 @@
 import click
 
+
+"""
+def losulosu(weights):
+    winners = []
+    winners = random.choices(participants, weights = weights, k=5)
+    print(winners)
+    for person in range(len(winners)):
+        print(winners[person].print_last_name)
+"""
+     
+        #return ('[%s]' % ', '.join(map(str, list))) # to return list without the quotation marks
+
+
+person_string = '{"number": 1, "first_name": "Zenek", "last_name": "Miler"}'
+person_dict = json.loads(person_string)
+person_object = Participant(**person_dict)
+print(person_object._first_name)
+
+
 def printwinners_json(number_of_winners):
     #lottery_template = select_lottery_template()
     #print(lottery_template)
