@@ -38,7 +38,10 @@ class Prize:
     @property
     def get_prize_name(self):
         return self._prize_name
-    pass
+    @property
+    def get_prize_amount(self):
+        return self._prize_amount
+        
 
 class Lottery:
     def __init__(self, list_of_participants, list_of_weights, list_of_prizes):
@@ -52,12 +55,31 @@ class Lottery:
         return self._list_of_participants
 
     def losulosu(self):
-        #for x in (range(len(lis)))
+        total_amount_of_prizes = 0
+        all_separate_prizes = []
+        all_prizes = []
+        for x in (range(len(self._list_of_prizes))):
+            current_amount = self._list_of_prizes[x].get_prize_amount
+            total_amount_of_prizes += current_amount
+            all_prizes.append(self._list_of_prizes[x].get_prize_name)
+            
+        #print(total_amount_of_prizes)
+        #print(all_prizes)
+        
+        for n in range(0, total_amount_of_prizes):
+            try:
+                all_separate_prizes.append(all_prizes[n])
+                #print(all_separate_prizes)
+            except:
+                all_separate_prizes.append(all_separate_prizes[n-1])
+                #print(all_separate_prizes)
+        #print(all_separate_prizes)
+            
         winners = []
-        winners = random.choices(list(set(self._list_of_participants)), weights=self._list_of_weights, k=len(self._list_of_prizes))
+        winners = random.choices(list(set(self._list_of_participants)), weights=self._list_of_weights, k=total_amount_of_prizes)
         #print(winners)
         for person in range(len(winners)):
-            print(winners[person].get_id, winners[person].get_first_name, winners[person].get_last_name, " has won ", self._list_of_prizes[person].get_prize_name)
+            print(winners[person].get_id, winners[person].get_first_name, winners[person].get_last_name, " has won ", all_separate_prizes[person])
 
     
 # function loads .csv or .json file and returns JSON list
@@ -116,7 +138,7 @@ def load_prizes(lottery_template):
             prize = Prize(prize_id, prize_name, prize_amount)
             
             list_of_prizes.append(prize)
-        print(list_of_prizes)
+        #print(list_of_prizes)
         return list_of_prizes
         
 def conversion_to_json(json_obj):
@@ -132,11 +154,11 @@ def lottery_menu():
     
     #todo - prevent input from being anything but 4 numbers
     file_path_select = input("""Please select the participants file path: \n
-                            1 - data/participants1.csv \n 
-                            2 - data/participants1.json \n 
-                            3 - data/participants2.csv \n 
-                            4 - data/participants2.json \n
-                            """) 
+    1 - data/participants1.csv \n 
+    2 - data/participants1.json \n 
+    3 - data/participants2.csv \n 
+    4 - data/participants2.json \n
+    """) 
     participants_path = "data/participants1.csv"
 
     def select_participants_file(x):
@@ -150,9 +172,9 @@ def lottery_menu():
 
     #todo - prevent input from being anything but 4 numbers
     file_path_select = input("""Please select the lottery template path: \n
-                            1 - data/lottery_templates/item_giveaway.json \n 
-                            2 - data/lottery_templates/separate_prizes.json \n                             
-                            """) 
+    1 - data/lottery_templates/item_giveaway.json \n 
+    2 - data/lottery_templates/separate_prizes.json \n                             
+    """) 
     def select_lottery_template_file(x):
         return {
             '1': "data/lottery_templates/item_giveaway.json",
@@ -180,7 +202,7 @@ lottery_menu()
 
 
 """
-not-objected
+not-object-oriented
 
 #lottery_menu()
 def losulosu_json(items):
