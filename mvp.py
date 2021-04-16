@@ -2,7 +2,12 @@ import json, random, pathlib, csv, sys
 from urllib.request import urlopen
 import ast
 #import click
+#import pytest
 
+
+"""
+
+"""
 
 class Participant:
     def __init__(self, id, first_name, last_name, weight = 1):
@@ -42,7 +47,6 @@ class Prize:
     def get_prize_amount(self):
         return self._prize_amount
         
-
 class Lottery:
     def __init__(self, list_of_participants, list_of_weights, list_of_prizes):
         self._list_of_participants = list_of_participants
@@ -58,23 +62,18 @@ class Lottery:
         total_amount_of_prizes = 0
         all_separate_prizes = []
         all_prizes = []
+
         for x in (range(len(self._list_of_prizes))):
             current_amount = self._list_of_prizes[x].get_prize_amount
             total_amount_of_prizes += current_amount
-            all_prizes.append(self._list_of_prizes[x].get_prize_name)
-            
-        #print(total_amount_of_prizes)
-        #print(all_prizes)
-        
+            all_prizes.append(self._list_of_prizes[x].get_prize_name)            
+  
         for n in range(0, total_amount_of_prizes):
             try:
-                all_separate_prizes.append(all_prizes[n])
-                #print(all_separate_prizes)
+                all_separate_prizes.append(all_prizes[n])                
             except:
                 all_separate_prizes.append(all_separate_prizes[n-1])
-                #print(all_separate_prizes)
-        #print(all_separate_prizes)
-            
+                            
         winners = []
         winners = random.choices(list(set(self._list_of_participants)), weights=self._list_of_weights, k=total_amount_of_prizes)
         #print(winners)
@@ -82,22 +81,30 @@ class Lottery:
             print(winners[person].get_id, winners[person].get_first_name, winners[person].get_last_name, "has won", all_separate_prizes[person])
 
     
-# function loads .csv or .json file and returns JSON list
+# function read_input_file loads .csv or .json file and returns JSON list
 def read_input_file(file_path):
     if file_path.endswith(".json"): 
         loaded_file = json.load(open(file_path,"r"))         
         loaded_file = json.dumps(loaded_file, indent=4)
+        print(loaded_file) 
         print("JSON file loaded successfully.") 
         return loaded_file
     elif file_path.endswith(".csv"): 
         loaded_file = json.dumps(list(csv.DictReader(open(file_path))), indent = 4)  
-        print("CSV file loaded successfully.")       
+        print("CSV file loaded successfully.")
+        print(loaded_file)       
         return loaded_file
     else: raise ValueError("The file is not json nor csv.")
 
-
+# function conversion_to_json creates file containing participants from loaded file in common format
+def conversion_to_json(json_obj):
+    original_stdout = sys.stdout # Save a reference to the original standard output
+    with open('participants_converted.json', 'w') as f:
+        sys.stdout = f 
+        print(json_obj)
+        sys.stdout = original_stdout 
 """
-function load_participants creates a list of Participant class objects and returns list of weights
+Function load_participants creates a list of Participant class objects and returns list of weights (if they exists)
 """
 def load_participants():
     with open("participants_converted.json") as json_file_opened:
@@ -123,7 +130,9 @@ def load_participants():
         
         return list_of_participants, list_of_weights
         #return ('[%s]' % ', '.join(map(str, list))) # to return list without the quotation marks
-        
+"""
+Function load_prizes creates a list of Prize class objects and returns list of prizes
+"""        
 def load_prizes(lottery_template):
 
     with open(lottery_template) as json_file_opened:
@@ -141,13 +150,10 @@ def load_prizes(lottery_template):
         #print(list_of_prizes)
         return list_of_prizes
         
-def conversion_to_json(json_obj):
-    original_stdout = sys.stdout # Save a reference to the original standard output
-    with open('participants_converted.json', 'w') as f:
-        sys.stdout = f 
-        print(json_obj)
-        sys.stdout = original_stdout 
 
+"""
+Funcion lottery menu 
+"""
 
 def lottery_menu():
     print("Welcome to Losowanko!!! Please select the list of participants and the list of prizes: ")
@@ -193,10 +199,9 @@ def lottery_menu():
     json_obj = read_input_file(participants_path)
     conversion_to_json(json_obj)
     
-    
+    #creating list of prizes
     list_of_prizes = load_prizes(lottery_template)
-    list_of_participants, list_of_weights = load_participants()
-    
+    list_of_participants, list_of_weights = load_participants()   
 
 
     multilotek = Lottery(list_of_participants, list_of_weights, list_of_prizes)
