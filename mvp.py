@@ -79,7 +79,7 @@ class Lottery:
         winners = random.choices(list(set(self._list_of_participants)), weights=self._list_of_weights, k=total_amount_of_prizes)
         #print(winners)
         for person in range(len(winners)):
-            print(winners[person].get_id, winners[person].get_first_name, winners[person].get_last_name, " has won ", all_separate_prizes[person])
+            print(winners[person].get_id, winners[person].get_first_name, winners[person].get_last_name, "has won", all_separate_prizes[person])
 
     
 # function loads .csv or .json file and returns JSON list
@@ -151,36 +151,43 @@ def conversion_to_json(json_obj):
 
 def lottery_menu():
     print("Welcome to Losowanko!!! Please select the list of participants and the list of prizes: ")
-    
-    #todo - prevent input from being anything but 4 numbers
-    file_path_select = input("""Please select the participants file path: \n
+    def get_int(prompt):
+        while True:
+            try:
+                choice = int(input(prompt))
+                break
+            except ValueError:
+                print('Please enter an integer value.')
+        return choice
+
+    choice = get_int("""Please select the participants file path: \n
     1 - data/participants1.csv \n 
     2 - data/participants1.json \n 
     3 - data/participants2.csv \n 
     4 - data/participants2.json \n
-    """) 
-    participants_path = "data/participants1.csv"
-
+    """)
+    
     def select_participants_file(x):
         return {
-            '1': "data/participants1.csv",
-            '2': "data/participants1.json",
-            '3': "data/participants2.csv",
-            '4': "data/participants2.json",
+            1: "data/participants1.csv",
+            2: "data/participants1.json",
+            3: "data/participants2.csv",
+            4: "data/participants2.json",
         }.get(x, 1)
-    participants_path = select_participants_file(file_path_select)
+   
+    participants_path = select_participants_file(choice)
 
-    #todo - prevent input from being anything but 4 numbers
-    file_path_select = input("""Please select the lottery template path: \n
+    choice = get_int("""Please select the lottery template path: \n
     1 - data/lottery_templates/item_giveaway.json \n 
     2 - data/lottery_templates/separate_prizes.json \n                             
-    """) 
+    """)
+    
     def select_lottery_template_file(x):
         return {
-            '1': "data/lottery_templates/item_giveaway.json",
-            '2': "data/lottery_templates/separate_prizes.json",
+            1: "data/lottery_templates/item_giveaway.json",
+            2: "data/lottery_templates/separate_prizes.json",
         }.get(x, 1)
-    lottery_template = select_lottery_template_file(file_path_select)
+    lottery_template = select_lottery_template_file(choice)
 
     #conversion participants file to common format
     json_obj = read_input_file(participants_path)
@@ -201,114 +208,3 @@ def lottery_menu():
 lottery_menu()
 
 
-"""
-not-object-oriented
-
-#lottery_menu()
-def losulosu_json(items):
-    all_weights = []
-    all_indexes = []
-    with open("participants_converted.json") as json_file_opened:
-        json_loader = json.load(json_file_opened)
-    for person in range(len(json_loader)):
-        current_index  = json_loader[person]['id']
-        current_index = ast.literal_eval(current_index)
-        all_indexes.append(current_index)
-        try:
-            current_weight = json_loader[person]["weight"]            
-            current_weight = ast.literal_eval(current_weight)            
-            all_weights.append(current_weight)            
-        except:
-            all_weights.append(1)
-    all_indexes_set = set(all_indexes) #converting list to set to avoid repetitions
-    print(all_indexes_set)
-    randomList = random.choices(list(all_indexes_set), weights = all_weights, k=items)
-    print(randomList, "in losulosu_json")
-    return randomList
-
-
-#losulosu_json(number_of_winners)
-
-def item_giveaway_lottery():
-    with open("data/lottery_templates/item_giveaway.json") as json_file_opened:
-            json_loader = json.load(json_file_opened)
-    lottery_template = json_loader
-    #print(lottery_template)
-    winners = losulosu_json(5)
-    data_from_csv = {}
-    #print(winners)
-    list_of_winners = json.dumps(winners)
-    print(list_of_winners, " winners returned by losulosu_json in printwinners_json")
-    with open("jsonfile.json", 'w') as jsonFile:
-        jsonFile.write(json.dumps(data_from_csv, indent=4))
-
-    with open("participants_converted.json") as json_file_opened:
-        json_loader = json.load(json_file_opened)
-
-    data=[]
-    for x in winners:
-        my_item = next((item for item in json_loader if item['id'] == str(x)), None)
-        data.append(my_item)
-        
-    print(data,  " converted json list of winners in printwinners_json")
-    with open("winners.json", 'w') as winners_file:
-        winners_file.write(json.dumps(data, indent=4))
-
-
-
-
-
-
-    with open("winners.json") as winners_file:
-        winners_loader = json.load(winners_file)
-        #winners_loader[1]["prize"] = 3
-        #print(winners_loader)
-        print("The list of winners:")        
-        for x in range(len(winners_loader)):
-            winners_loader[x]['prize'] = lottery_template['prizes'][0]
-            current_winner_first_name = winners_loader[x]['first_name']
-            current_winner_last_name = winners_loader[x]['last_name']
-            print(current_winner_first_name, current_winner_last_name + " has won", winners_loader[x]['prize']['name'])
-        print(winners_loader)   
-    return(winners)
-
-
-def separate_prizes_lottery():
-    with open("data/lottery_templates/separate_prizes.json") as json_file_opened:
-            json_loader = json.load(json_file_opened)
-    lottery_template = json_loader
-    #print(lottery_template)
-    winners = losulosu_json(3)
-    data_from_csv = {}
-    #print(winners)
-    list_of_winners = json.dumps(winners)
-    print(list_of_winners, " winners returned by losulosu_json in printwinners_json")
-    with open("jsonfile.json", 'w') as jsonFile:
-        jsonFile.write(json.dumps(data_from_csv, indent=4))
-
-    with open("participants_converted.json") as json_file_opened:
-        json_loader = json.load(json_file_opened)
-
-    data=[]
-    for x in winners:
-        my_item = next((item for item in json_loader if item['id'] == str(x)), None)
-        data.append(my_item)
-        
-    print(data,  " converted json list of winners in printwinners_json")
-    with open("winners.json", 'w') as winners_file:
-        winners_file.write(json.dumps(data, indent=4))
-
-    with open("winners.json") as winners_file:
-        winners_loader = json.load(winners_file)
-        #winners_loader[1]["prize"] = 3
-        #print(winners_loader)
-        print("The list of winners:")        
-        for x in range(len(winners_loader)):
-            winners_loader[x]['prize'] = lottery_template['prizes'][x]
-            current_winner_first_name = winners_loader[x]['first_name']
-            current_winner_last_name = winners_loader[x]['last_name']
-            print(current_winner_first_name, current_winner_last_name + " has won", winners_loader[x]['prize']['name'])
-        print(winners_loader)   
-    return(winners)
-
-"""
