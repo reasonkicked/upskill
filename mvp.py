@@ -86,13 +86,13 @@ def read_input_file(file_path):
     if file_path.endswith(".json"): 
         loaded_file = json.load(open(file_path,"r"))         
         loaded_file = json.dumps(loaded_file, indent=4)
-        print(loaded_file) 
+        #print(loaded_file) 
         print("JSON file loaded successfully.") 
         return loaded_file
     elif file_path.endswith(".csv"): 
         loaded_file = json.dumps(list(csv.DictReader(open(file_path))), indent = 4)  
         print("CSV file loaded successfully.")
-        print(loaded_file)       
+        #print(loaded_file)       
         return loaded_file
     else: raise ValueError("The file is not json nor csv.")
 
@@ -155,9 +155,7 @@ def load_prizes(lottery_template):
 Funcion lottery menu 
 """
 
-def lottery_menu():
-    print("Welcome to Losowanko!!! Please select the list of participants and the list of prizes: ")
-    def get_int(prompt):
+def get_int(prompt):
         while True:
             try:
                 choice = int(input(prompt))
@@ -165,6 +163,10 @@ def lottery_menu():
             except ValueError:
                 print('Please enter an integer value.')
         return choice
+
+def lottery_menu():
+    print("Welcome to Losowanko!!! Please select the list of participants and the list of prizes: ")
+    
 
     choice = get_int("""Please select the participants file path: \n
     1 - data/participants1.csv \n 
