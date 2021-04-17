@@ -1,9 +1,0 @@
-README.md
-setup.py
-upskill.py
-upskill.egg-info/PKG-INFO
-upskill.egg-info/SOURCES.txt
-upskill.egg-info/dependency_links.txt
-upskill.egg-info/entry_points.txt
-upskill.egg-info/requires.txt
-upskill.egg-info/top_level.txt
