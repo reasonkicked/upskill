@@ -1,6 +1,8 @@
-import json, random, pathlib, csv, sys
-from urllib.request import urlopen
+import json, random, csv, sys
 import ast
+from lottery.lottery import testdd
+
+
 # import click
 # import pytest
 
@@ -11,7 +13,7 @@ import ast
 
 
 class Participant:
-    def __init__(self, id, first_name, last_name, weight = 1):
+    def __init__(self, id, first_name, last_name, weight=1):
         self._id = id
         self._first_name = first_name
         self._last_name = last_name
@@ -76,11 +78,10 @@ class Lottery:
   
         for n in range(0, total_amount_of_prizes):
             try:
-                all_separate_prizes.append(all_prizes[n])                
-            except:
+                all_separate_prizes.append(all_prizes[n])
+            except IndexError:
                 all_separate_prizes.append(all_separate_prizes[n-1])
                             
-        winners = []
         winners = random.choices(list(set(self._list_of_participants)),
                                  weights=self._list_of_weights, k=total_amount_of_prizes)
         # print(winners)
@@ -92,13 +93,13 @@ class Lottery:
 # function read_input_file loads .csv or .json file and returns JSON list
 def read_input_file(file_path):
     if file_path.endswith(".json"): 
-        loaded_file = json.load(open(file_path,"r"))         
+        loaded_file = json.load(open(file_path, "r"))
         loaded_file = json.dumps(loaded_file, indent=4)
         # print(loaded_file)
         print("JSON file loaded successfully.") 
         return loaded_file
     elif file_path.endswith(".csv"): 
-        loaded_file = json.dumps(list(csv.DictReader(open(file_path))), indent = 4)  
+        loaded_file = json.dumps(list(csv.DictReader(open(file_path))), indent=4)
         print("CSV file loaded successfully.")
         # print(loaded_file)
         return loaded_file
@@ -109,7 +110,7 @@ def read_input_file(file_path):
 
 
 def conversion_to_json(json_obj):
-    original_stdout = sys.stdout # Save a reference to the original standard output
+    original_stdout = sys.stdout  # Save a reference to the original standard output
     with open('participants_converted.json', 'w') as f:
         sys.stdout = f 
         print(json_obj)
@@ -128,7 +129,7 @@ def load_participants():
         list_of_participants = []
         list_of_weights = []
         for person in range(len(json_loader)):
-            participant_id  = json_loader[person]['id']
+            participant_id = json_loader[person]['id']
             participant_id = ast.literal_eval(participant_id)
             participant_first_name = json_loader[person]['first_name']
             participant_last_name = json_loader[person]['last_name']
@@ -172,7 +173,7 @@ def load_prizes(lottery_template):
         
 
 """
-Funcion lottery menu 
+Function lottery menu 
 """
 
 
@@ -187,15 +188,6 @@ def get_int(prompt):
 
 
 def lottery_menu():
-    print("Welcome to Losowanko!!! Please select the list of participants and the list of prizes: ")
-
-    choice = get_int("""Please select the participants file path: \n
-    1 - data/participants1.csv \n 
-    2 - data/participants1.json \n 
-    3 - data/participants2.csv \n 
-    4 - data/participants2.json \n
-    """)
-    
     def select_participants_file(x):
         return {
             1: "data/participants1.csv",
@@ -203,19 +195,29 @@ def lottery_menu():
             3: "data/participants2.csv",
             4: "data/participants2.json",
         }.get(x, 1)
-   
+
+    def select_lottery_template_file(x):
+        return {
+            1: "data/lottery_templates/item_giveaway.json",
+            2: "data/lottery_templates/separate_prizes.json",
+        }.get(x, 1)
+
+    print("Welcome to Awesome Lottery!!! Please select the list of participants and the list of prizes: ")
+
+    choice = get_int("""Please select the participants file path: \n
+    1 - data/participants1.csv \n 
+    2 - data/participants1.json \n 
+    3 - data/participants2.csv \n 
+    4 - data/participants2.json \n
+    """)
+
     participants_path = select_participants_file(choice)
 
     choice = get_int("""Please select the lottery template path: \n
     1 - data/lottery_templates/item_giveaway.json \n 
     2 - data/lottery_templates/separate_prizes.json \n                             
     """)
-    
-    def select_lottery_template_file(x):
-        return {
-            1: "data/lottery_templates/item_giveaway.json",
-            2: "data/lottery_templates/separate_prizes.json",
-        }.get(x, 1)
+
     lottery_template = select_lottery_template_file(choice)
 
     # conversion participants file to common format
@@ -226,11 +228,9 @@ def lottery_menu():
     list_of_prizes = load_prizes(lottery_template)
     list_of_participants, list_of_weights = load_participants()   
 
-    multilotek = Lottery(list_of_participants, list_of_weights, list_of_prizes)
+    awesome_lottery = Lottery(list_of_participants, list_of_weights, list_of_prizes)
 
-    multilotek.random_winners_choice()
+    awesome_lottery.random_winners_choice()
 
 
 lottery_menu()
-
-

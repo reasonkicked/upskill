@@ -1,0 +1,13 @@
+README.md
+setup.py
+upskill.py
+Lottery.egg-info/PKG-INFO
+Lottery.egg-info/SOURCES.txt
+Lottery.egg-info/dependency_links.txt
+Lottery.egg-info/entry_points.txt
+Lottery.egg-info/requires.txt
+Lottery.egg-info/top_level.txt
+lottery/__init__.py
+lottery/__main__.py
+lottery/lottery.py
+lottery/test/__init__.py

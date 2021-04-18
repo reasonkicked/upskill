@@ -68,7 +68,7 @@ def printwinners(csv_obj):
     with open("jsonfile.json", 'w') as jsonFile:
         jsonFile.write(json.dumps(data_from_csv, indent=4))
 
-    with open("data/participants1.json") as json_file_opened:
+    with open("lottery/data/participants1.json") as json_file_opened:
         json_loader = json.load(json_file_opened)
 
     data=[]

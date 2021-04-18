@@ -1,4 +1,6 @@
 from pprint import pprint as pp
+
+
 class Flight:
 
     def __init__(self, number, aircraft):
