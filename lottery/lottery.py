@@ -1,12 +1,9 @@
-import json, random, csv, sys
+import json
+import random
+import csv
+import sys
 import ast
-import click
 from debugly import debug, debugmethods
-
-
-@click.command()
-def cli():
-    click.echo('Hello, world!')
 
 
 """
@@ -111,6 +108,7 @@ def read_input_file(file_path):
         raise ValueError("The file is not json nor csv.")
 
 # function conversion_to_json creates file containing participants from loaded file in common format
+
 
 def conversion_to_json(json_obj):
     original_stdout = sys.stdout  # Save a reference to the original standard output
@@ -236,7 +234,7 @@ def lottery_menu():
 
 
 if __name__ == "__main__":
-   print("File two executed when ran directly")
+    print("File two executed when ran directly")
 else:
-   print("File two executed when imported")
-
+    pass
+    #  print("File two executed when imported")

@@ -1,1 +1,1 @@
-from lottery.lottery import lottery_menu, cli
+from lottery.lottery import lottery_menu
