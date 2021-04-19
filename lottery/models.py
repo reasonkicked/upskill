@@ -78,3 +78,8 @@ class Lottery:
         for person in range(len(winners)):
             print(winners[person].get_id, winners[person].get_first_name, winners[person].get_last_name, "has won",
                   all_separate_prizes[person])
+
+
+class Config(object):
+    def __init__(self):
+        self.verbose = False
