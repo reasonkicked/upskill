@@ -8,11 +8,6 @@ import lottery
 from debugly import debug, debugmethods
 
 
-"""
-
-"""
-
-
 # function read_input_file loads .csv or .json file and returns JSON list
 # @debug(prefix='***')
 def read_input_file(file_path):
@@ -42,7 +37,7 @@ def conversion_to_json(json_obj):
 
 
 """
-Function load_participants creates a list of Participant class objects and returns list of weights (if they exists)
+Function load_participants creates a list of Participant class objects and returns list of weights (if they exists).
 """
 
 
@@ -66,7 +61,8 @@ def load_participants():
                 current_weight = 1
                 list_of_weights.append(1)
 
-            participant = lottery.Participant(participant_id, participant_first_name, participant_last_name, current_weight)
+            participant = lottery.Participant(participant_id, participant_first_name, participant_last_name,
+                                              current_weight)
             list_of_participants.append(participant)
 
         return list_of_participants, list_of_weights
@@ -93,11 +89,6 @@ def load_prizes(lottery_template):
             list_of_prizes.append(prize)
         # print(list_of_prizes)
         return list_of_prizes
-
-
-"""
-Function lottery menu 
-"""
 
 
 def get_int(prompt):
