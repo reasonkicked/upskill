@@ -115,7 +115,7 @@ def lottery_menu(participants_template_file, lottery_template_file):
     list_of_participants, list_of_weights = load_participants()
 
     awesome_lottery = lottery.Lottery(list_of_participants, list_of_weights, list_of_prizes)
-
+    print(awesome_lottery.all_prizes)
     awesome_lottery.random_winners_choice()
 
 

@@ -77,6 +77,9 @@ class Lottery:
         for person in range(len(winners)):
             print(winners[person].participant_id, winners[person].participant_first_name, winners[person].participant_last_name, "has won",
                   all_separate_prizes[person])
+        return all_prizes
+
+    all_prizes = property(random_winners_choice)
 
 
 class Config(object):
