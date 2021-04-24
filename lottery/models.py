@@ -10,18 +10,18 @@ class Participant:
         self._weight = weight
 
     @property
-    def get_first_name(self):
+    def participant_first_name(self):
         return self._first_name
 
     @property
-    def get_last_name(self):
+    def participant_last_name(self):
         return self._last_name
 
     @property
-    def get_id(self):
+    def participant_id(self):
         return self._id
 
-    def get_weight(self):
+    def participant_weight(self):
         return self._weight
 
 
@@ -31,17 +31,16 @@ class Prize:
         self._prize_name = prize_name
         self._prize_amount = prize_amount
 
-    @property
     def print_prize_name(self):
         print(self._prize_name)
         return self._prize_name
 
     @property
-    def get_prize_name(self):
+    def prize_name(self):
         return self._prize_name
 
     @property
-    def get_prize_amount(self):
+    def prize_amount(self):
         return self._prize_amount
 
 
@@ -62,9 +61,9 @@ class Lottery:
         all_prizes = []
 
         for x in (range(len(self._list_of_prizes))):
-            current_amount = self._list_of_prizes[x].get_prize_amount
+            current_amount = self._list_of_prizes[x].prize_amount
             total_amount_of_prizes += current_amount
-            all_prizes.append(self._list_of_prizes[x].get_prize_name)
+            all_prizes.append(self._list_of_prizes[x].prize_name)
 
         for n in range(0, total_amount_of_prizes):
             try:
@@ -76,7 +75,7 @@ class Lottery:
                                  weights=self._list_of_weights, k=total_amount_of_prizes)
         # print(winners)
         for person in range(len(winners)):
-            print(winners[person].get_id, winners[person].get_first_name, winners[person].get_last_name, "has won",
+            print(winners[person].participant_id, winners[person].participant_first_name, winners[person].participant_last_name, "has won",
                   all_separate_prizes[person])
 
 
