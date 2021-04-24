@@ -1,0 +1,6 @@
+__pycache__
+Lottery.egg-info
+.idea
+.DS_Store
+venv
+test
