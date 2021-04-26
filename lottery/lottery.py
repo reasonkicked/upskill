@@ -77,16 +77,27 @@ Function load_prizes creates a list of Prize class objects and returns list of p
 def load_prizes(lottery_template):
     with open(lottery_template) as json_file_opened:
         json_loader = json.load(json_file_opened)
-
+        print(json_loader)
         list_of_prizes = []
-        for prize in range(len(json_loader['prizes'])):
-            prize_id = json_loader['prizes'][prize]['id']
-            prize_name = json_loader['prizes'][prize]['name']
-            prize_amount = json_loader['prizes'][prize]['amount']
+        for prize in json_loader['prizes']:
+            prize_id = prize['id']
+            prize_name = prize['name']
+            prize_amount = prize['amount']
 
-            prize = lottery.Prize(prize_id, prize_name, prize_amount)
+            prize_obj = lottery.Prize(prize_id, prize_name, prize_amount)
 
-            list_of_prizes.append(prize)
+            list_of_prizes.append(prize_obj)
+
+            # for prize in range(len(json_loader['prizes'])):
+            #     prize_id = json_loader['prizes'][prize]['id']
+            #     prize_name = json_loader['prizes'][prize]['name']
+            #     prize_amount = json_loader['prizes'][prize]['amount']
+            #
+            #     prize = lottery.Prize(prize_id, prize_name, prize_amount)
+            #
+            #     list_of_prizes.append(prize)
+
+
         # print(list_of_prizes)
         return list_of_prizes
 
